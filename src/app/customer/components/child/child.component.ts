@@ -25,4 +25,8 @@ export class ChildComponent implements OnInit, OnChanges {
         this.cd.detectChanges();
     }
 
+    doMarkForCheck() {
+        this.cd.markForCheck();
+    }
+
 }

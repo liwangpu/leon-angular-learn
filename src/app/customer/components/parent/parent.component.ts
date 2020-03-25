@@ -24,4 +24,8 @@ export class ParentComponent implements OnInit, OnChanges {
     refresh() {
         this.cd.detectChanges();
     }
+
+    doMarkForCheck() {
+        this.cd.markForCheck();
+    }
 }
