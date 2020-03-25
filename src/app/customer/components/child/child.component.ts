@@ -4,7 +4,7 @@ import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, S
     selector: 'app-child',
     templateUrl: './child.component.html',
     styleUrls: ['./child.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChildComponent implements OnInit, OnChanges {
 
