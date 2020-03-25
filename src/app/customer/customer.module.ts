@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { CustomerRoutingModule } from './customer-routing.module';
 import { HomeComponent } from './components/home/home.component';
+import { ParentComponent } from './components/parent/parent.component';
+import { ChildComponent } from './components/child/child.component';
 
 @NgModule({
-    declarations: [HomeComponent],
+    declarations: [HomeComponent, ParentComponent, ChildComponent],
     imports: [
         CommonModule,
         CustomerRoutingModule

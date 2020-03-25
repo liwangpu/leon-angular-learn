@@ -1,2 +1,14 @@
 <h1>Customer Home Works!</h1>
 <hr>
+<button (click)='updatePerson()'>更新用户</button>
+<button (click)='infoChange()'>我去通知大家值改变了</button>
+<p>person update:{{person?.updateTime}}</p>
+<br>
+<br>
+<br>
+<br>
+<!-- <app-parent [person]='person'></app-parent> -->
+<div class="container">
+    <app-parent [person]='person'></app-parent>
+    <app-parent [person]='person'></app-parent>
+</div>

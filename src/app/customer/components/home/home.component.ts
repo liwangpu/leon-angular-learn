@@ -1,15 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 
 @Component({
-  selector: 'customer-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    selector: 'customer-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnChanges {
 
-  constructor() { }
+    person = { updateTime: 'default time' };
+    constructor(
+        private cd: ChangeDetectorRef
+    ) { }
 
-  ngOnInit() {
-  }
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log('home changes:', changes);
+    }
 
+    ngOnInit() {
+    }
+
+    infoChange() {
+        this.cd.markForCheck();
+    }
+
+    updatePerson() {
+        this.person.updateTime = Date.now().toString();
+    }
 }

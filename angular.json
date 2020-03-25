@@ -90,7 +90,7 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "port": 9876,
+                        "port": 4200,
                         "browserTarget": "leon-angular-learn:build"
                     },
                     "configurations": {

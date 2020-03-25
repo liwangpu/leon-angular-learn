@@ -1,0 +1,8 @@
+<div class="parent">
+    <h5>Parent</h5>
+    <button (click)='refresh()'>刷新数据</button>
+    <p>person update:{{person?.updateTime}}</p>
+    <br>
+    <br>
+    <app-child [person]='person'></app-child>
+</div>
