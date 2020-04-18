@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-
 const routes: Routes = [
-    {
-        path: 'school',
-        loadChildren: () => import('./school/school.module').then(m => m.SchoolModule)
-    },
     {
         path: 'customer',
         loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule)
     },
-    { path: '', pathMatch: 'full', redirectTo: 'customer' }
+    {
+        path: 'school',
+        loadChildren: () => import('./school/school.module').then(m => m.SchoolModule)
+    },
+    { path: '', pathMatch: 'full', redirectTo: 'customer' },
+    { path: '**', redirectTo: 'customer' }
 ];
 
 @NgModule({
