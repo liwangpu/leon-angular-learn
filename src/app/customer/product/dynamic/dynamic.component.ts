@@ -17,6 +17,7 @@ export class DynamicComponent implements OnInit, OnDestroy {
             this.key = res.get('key');
         });
     }
+    
     ngOnDestroy(): void {
         console.log('dynamic destroy');
     }
