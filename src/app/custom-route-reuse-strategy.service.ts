@@ -9,7 +9,7 @@ export class CustomRouteReuseStrategyService implements RouteReuseStrategy {
     constructor() { }
 
     shouldDetach(route: ActivatedRouteSnapshot): boolean {
-        return true;
+        return false;
     }
 
     store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
@@ -17,7 +17,7 @@ export class CustomRouteReuseStrategyService implements RouteReuseStrategy {
     }
 
     shouldAttach(route: ActivatedRouteSnapshot): boolean {
-        return true;
+        return false;
     }
 
     retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
@@ -25,6 +25,6 @@ export class CustomRouteReuseStrategyService implements RouteReuseStrategy {
     }
 
     shouldReuseRoute(before: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
-        return true;
+        return false;
     }
 }
