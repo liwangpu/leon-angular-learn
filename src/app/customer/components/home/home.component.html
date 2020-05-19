@@ -4,6 +4,10 @@
     <a routerLink="/customer/dynamic/product/search" routerLinkActive="active">Search</a>
     <a routerLink="/customer/dynamic/product/list" routerLinkActive="active">List</a>
     <a routerLink="/customer/dynamic/product/detail/a1" routerLinkActive="active">Detail/a1</a>
+    <a routerLink="/customer/dynamic/product/search" [queryParams]="{name: 'leon'}" routerLinkActive="active">Search
+        ?</a>
+    <a routerLink="/customer/dynamic/product/list" [queryParams]="{age: 8}"  routerLinkActive="active">List ?</a>
+    <a routerLink="/customer/dynamic/product/detail/a1" [queryParams]="{gender: 0}"  routerLinkActive="active">Detail/a1 ?</a>
 </div>
 <br>
 <br>
