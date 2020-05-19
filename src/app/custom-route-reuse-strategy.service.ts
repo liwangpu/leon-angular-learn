@@ -1,30 +1,30 @@
-// import { Injectable } from '@angular/core';
-// import { RouteReuseStrategy, ActivatedRouteSnapshot, DetachedRouteHandle } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { RouteReuseStrategy, ActivatedRouteSnapshot, DetachedRouteHandle } from '@angular/router';
 
-// @Injectable({
-//     providedIn: 'root'
-// })
-// export class CustomRouteReuseStrategyService implements RouteReuseStrategy {
+@Injectable({
+    providedIn: 'root'
+})
+export class CustomRouteReuseStrategyService implements RouteReuseStrategy {
 
-//     constructor() { }
+    constructor() { }
 
-//     shouldDetach(route: ActivatedRouteSnapshot): boolean {
-//         throw new Error('Method not implemented.');
-//     }
+    shouldDetach(route: ActivatedRouteSnapshot): boolean {
+        return true;
+    }
 
-//     store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
+    store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
 
-//     }
+    }
 
-//     shouldAttach(route: ActivatedRouteSnapshot): boolean {
+    shouldAttach(route: ActivatedRouteSnapshot): boolean {
+        return true;
+    }
 
-//     }
+    retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
+        return null;
+    }
 
-//     retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
-
-//     }
-
-//     shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
-
-//     }
-// }
+    shouldReuseRoute(before: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
+        return true;
+    }
+}
