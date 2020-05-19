@@ -17,10 +17,10 @@ import { CustomRouteReuseStrategyService } from './custom-route-reuse-strategy.s
         AppRoutingModule
     ],
     providers: [
-        // {
-        //     provide: RouteReuseStrategy,
-        //     useClass: CustomRouteReuseStrategyService
-        // }
+        {
+            provide: RouteReuseStrategy,
+            useClass: CustomRouteReuseStrategyService
+        }
     ],
     bootstrap: [AppComponent]
 })
