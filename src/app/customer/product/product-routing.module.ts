@@ -4,6 +4,7 @@ import { DynamicComponent } from './dynamic/dynamic.component';
 import { SearchComponent } from './search/search.component';
 import { ListComponent } from './list/list.component';
 import { DetailComponent } from './detail/detail.component';
+import { DetailResolverService } from './services/detail-resolver.service';
 
 
 const routes: Routes = [
@@ -21,7 +22,10 @@ const routes: Routes = [
     },
     {
         path: 'detail/:id',
-        component: DetailComponent
+        component: DetailComponent,
+        resolve: {
+            test: DetailResolverService
+        }
     },
 ];
 
