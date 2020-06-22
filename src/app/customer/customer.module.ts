@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { FormsModule } from '@angular/forms';
 import { CustomerRoutingModule } from './customer-routing.module';
 import { HomeComponent } from './components/home/home.component';
 
@@ -8,7 +8,8 @@ import { HomeComponent } from './components/home/home.component';
     declarations: [HomeComponent],
     imports: [
         CommonModule,
-        CustomerRoutingModule
+        CustomerRoutingModule,
+        FormsModule
     ],
     providers: [
     ]
