@@ -1,2 +1,12 @@
-<h1>School Home Works!</h1>
+<h3>动态组件</h3>
 <hr>
+<p>html模版</p>
+<textarea [(ngModel)]='htmlStr' cols="30" rows="10"></textarea>
+<p>css样式</p>
+<textarea [(ngModel)]='styleStr' cols="30" rows="10"></textarea>
+<br>
+<button (click)='generateDyc()'>生成动态组件</button>
+
+<br>
+<br>
+<div #vc></div>
