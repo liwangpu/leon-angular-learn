@@ -1,0 +1,19 @@
+<h3 class="title">所有菜单</h3>
+
+<div class="navs">
+    <div [class.favorite]='nv["@favorite"]' *ngFor='let nv of navigations;trackBy:trackById'
+        (click)='toggleFavorite(nv)'>
+        <span>{{nv.name}}</span>
+        <span (click)='removeNavigation(nv.id);$event.stopPropagation()'>×</span>
+    </div>
+</div>
+
+
+<br>
+<br>
+<div class="nav-edit-panel">
+    <label>菜单名称:</label>
+    <input type="text" #ipt>
+    <button (click)='ipt.value=""'>清空</button>
+    <button (click)='addNavigation(ipt.value)'>添加菜单</button>
+</div>

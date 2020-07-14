@@ -1,0 +1,8 @@
+<h3 class="title">用户收藏菜单</h3>
+
+<div class="navs">
+    <div *ngFor='let fv of favorites;trackBy:trackById'>
+        <span>{{fv.name}}</span>
+        <span (click)='removeFavorite(fv.id)'>×</span>
+    </div>
+</div>

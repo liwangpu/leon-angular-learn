@@ -3,15 +3,15 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
     {
-        path: 'customer',
-        loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule)
+        path: 'custom-data-store',
+        loadChildren: () => import('./custom-data-store/custom-data-store.module').then(m => m.CustomDataStoreModule)
     },
     {
-        path: 'school',
-        loadChildren: () => import('./school/school.module').then(m => m.SchoolModule)
+        path: 'redux-data-store',
+        loadChildren: () => import('./redux-data-store/redux-data-store.module').then(m => m.ReduxDataStoreModule)
     },
-    { path: '', pathMatch: 'full', redirectTo: 'customer' },
-    { path: '**', redirectTo: 'customer' }
+    { path: '', pathMatch: 'full', redirectTo: 'custom-data-store' },
+    { path: '**', redirectTo: 'custom-data-store' }
 ];
 
 @NgModule({

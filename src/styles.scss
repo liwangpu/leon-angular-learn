@@ -12,3 +12,74 @@ body {
     padding: 0;
     box-sizing: border-box;
 }
+
+hr {
+    margin-bottom: 1em;
+}
+
+h3.title {
+    color: #23A9F2;
+    padding: 1em 0;
+}
+
+div.navs {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    user-select: none;
+
+    &>div {
+        position: relative;
+        margin-right: 1em;
+        border: 1px solid gray;
+        padding: 2px 1.4em 2px .6em;
+        margin-bottom: 10px;
+
+        &.favorite {
+            background-color: #1F8DD6;
+            color: #fff;
+            border-color: #1F8DD6;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        span {
+            &:last-of-type {
+                position: absolute;
+                top: 2px;
+                right: 0;
+                display: block;
+                width: 20px;
+                height: 20px;
+                text-align: center;
+                line-height: 20px;
+
+                &:hover {
+                    cursor: pointer;
+                    color: red;
+                }
+            }
+        }
+    }
+}
+
+div.nav-edit-panel {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+
+    label {
+        width: 80px;
+    }
+
+    input {
+        padding: 4px 1em;
+    }
+
+    button {
+        padding: 3px 1em;
+        margin-left: .6em;
+    }
+}
