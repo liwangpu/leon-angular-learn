@@ -1,22 +1,25 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, forwardRef, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { StateStoreService } from 'src/app/state-store';
 import 'reflect-metadata';
 
 
-class DynamicComponent {
+export class DynamicComponent {
 
     public key: string = 'userMessage';
     constructor(
         protected injector: Injector
     ) {
-        const keys: Array<any> = Reflect.getMetadataKeys(this);
-        keys.forEach(k => {
-            // tslint:disable-next-line: no-dead-store
-            let md: any = Reflect.getMetadata(k, this);
-            console.log(1, md);
-        });
-        console.log(1, keys);
+        // const keys: Array<any> = Reflect.getMetadataKeys(this);
+        // keys.forEach(k => {
+        //     let { dataName } = Reflect.getMetadata(k, this);
+
+        //     this.stateStore.generateScopeSelector(`${this.key}.${dataName}`);
+
+
+        //     console.log('md', dataName);
+        // });
+        // console.log('keys', keys);
 
     }
 
@@ -29,10 +32,10 @@ class DynamicComponent {
     }
 }
 
-export function GetScope(path?: string) {
+export function GetScope(dataName: string) {
 
     return function (target: object, propertyName: string): any {
-        Reflect.defineMetadata(path, { type: 'get value' }, target);
+        Reflect.defineMetadata(propertyName, { dataName }, target);
     };
 }
 
@@ -55,7 +58,13 @@ export function SetScope(dataName?: string): Function {
 @Component({
     selector: 'customer-home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss']
+    styleUrls: ['./home.component.scss'],
+    providers: [
+        {
+            provide: DynamicComponent,
+            useExisting: forwardRef(() => HomeComponent)
+        }
+    ]
 })
 export class HomeComponent extends DynamicComponent implements OnInit {
 
@@ -73,15 +82,24 @@ export class HomeComponent extends DynamicComponent implements OnInit {
         });
     }
 
+    public ngOnDestroy(): void {
+        // console.log('home destroy');
+    }
+
     public ngOnInit() {
     }
 
-    @GetScope('form')
+    @GetScope('validate')
+    public onFormValidChange(value: any): void {
+        console.log('form get value change', value);
+    }
+
+    @GetScope('data')
     public onFormValueChange(value: any): void {
         console.log('form get value change', value);
     }
 
-    @SetScope('form')
+    @SetScope('data')
     public save(): any {
         return this.form.value;
     }

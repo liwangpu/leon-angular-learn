@@ -59,6 +59,27 @@ export class StateStoreService {
         this.store.dispatch(fromAction.resetScopeData({ from }));
     }
 
+    public generateScopeSelector(path: string): Observable<any> {
+        let dySelector: any = createSelector(
+            fromSelector.selectStoreState,
+            state => {
+
+                if (!_.has(state.mirror, path)) {
+                    return undefined;
+                }
+
+                return JSON.stringify(_.get(state.mirror, path));
+            }
+        );
+
+        return this.store.select(dySelector).pipe(map(str => {
+            if (typeof str === 'undefined') {
+                return str;
+            }
+            return JSON.parse(str);
+        }));
+    }
+
 
     // public notifyWhenExpressionChange(expression: {} | string): Observable<any> {
     //     let variables: Array<string> = fromUtils.ExpressionTranslator.analyzeVariable(expression);
