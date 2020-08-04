@@ -18,7 +18,9 @@ function updateScopeData(state: fromState.IStoreState, scope: {}, key: string, a
     return { ...componentScopeData };
 }
 
-export const stateReducer: ActionReducer<fromState.IStoreState> = createReducer({},
+export const stateReducer: ActionReducer<fromState.IStoreState> = createReducer({
+    mirror: {}
+},
     on(fromAction.setScopeData, (state: fromState.IStoreState, { key, action, scope }) => {
         if (!key) {
             return { ...state, mirror: { ...state.mirror, ...scope } };
