@@ -3,15 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
     {
-        path: 'customer',
-        loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule)
+        path: 'mirror',
+        loadChildren: () => import('./mirror/mirror.module').then(m => m.MirrorModule)
     },
-    {
-        path: 'school',
-        loadChildren: () => import('./school/school.module').then(m => m.SchoolModule)
-    },
-    { path: '', pathMatch: 'full', redirectTo: 'customer' },
-    { path: '**', redirectTo: 'customer' }
+    { path: '', pathMatch: 'full', redirectTo: 'mirror' },
+    { path: '**', redirectTo: 'mirror' }
 ];
 
 @NgModule({
