@@ -132,18 +132,18 @@ export class DycToolComponent implements OnInit {
 
     public async changeBusinessModel(): Promise<void> {
         let businesses: Array<{ key: string; id: string }> = await this.resourceDataStore.query('system_business', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
-        let models: Array<any> = await this.resourceDataStore.query('system_model', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+        let components: Array<{ dataSourceKey: string; id: string }> = await this.resourceDataStore.query('system_component_1', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
         let pdatas: Array<any> = [];
-        for (let bs of businesses) {
-            let model = models.find(m => m.key === bs.key);
-            if (!model) { continue; }
-            pdatas.push({ id: bs.id, modelId: model.id });
+        for (let com of components) {
+            let bs = businesses.find(b => b.key === com.dataSourceKey);
+            if (!bs) { continue; }
+            pdatas.push({ id: com.id, businessId: bs.id });
         }
 
         for (let pdata of pdatas) {
             let id = pdata.id;
             delete pdata.id;
-            await this.resourceDataStore.patch('system_business', id, pdata).toPromise();
+            await this.resourceDataStore.patch('system_component_1', id, pdata).toPromise();
         }
         console.log(1, pdatas);
 
