@@ -4,7 +4,7 @@
 
 export const environment = {
     production: false,
-    APIServer: 'https://d-xcloud-gateway.cxist.cn/web'
+    APIServer: 'https://t-xcloud-gateway.cxist.cn/web'
 };
 
 /*

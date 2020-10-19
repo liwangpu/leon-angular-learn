@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ComponentDesignDataStoreService, PageMetaDataStoreService, ResourceDataStoreService } from '../../services';
 import * as _ from "lodash";
 import * as moment from 'moment';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-dyc-tool',
@@ -12,7 +13,8 @@ export class DycToolComponent implements OnInit {
 
     public constructor(
         private pageMetaDataSrv: PageMetaDataStoreService,
-        private componentDesignDataStore: ComponentDesignDataStoreService
+        private componentDesignDataStore: ComponentDesignDataStoreService,
+        private resourceDataStore: ResourceDataStoreService
     ) { }
 
     public ngOnInit(): void {
@@ -106,5 +108,44 @@ export class DycToolComponent implements OnInit {
                 await await this.pageMetaDataSrv.delete(id).toPromise()
             }
         }
+    }
+
+    public async gridViewAddBussinesKey(): Promise<void> {
+        let businesses: Array<{ key: string; id: string }> = await this.resourceDataStore.query('system_business', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+        let gridViews: Array<{ businessKey: string; businessId: string; id: string }> = await this.resourceDataStore.query('system_grid_view', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+        let pdatas: Array<any> = [];
+        for (let view of gridViews) {
+            let bs = businesses.find(b => b.key === view.businessKey);
+            if (!bs) { continue; }
+            pdatas.push({ id: view.id, businessId: bs.id });
+        }
+
+        for (let pdata of pdatas) {
+            let id = pdata.id;
+            delete pdata.id;
+            await this.resourceDataStore.patch('system_grid_view', id, pdata).toPromise();
+        }
+
+
+        // console.log(1, pdatas);
+    }
+
+    public async changeBusinessModel(): Promise<void> {
+        let businesses: Array<{ key: string; id: string }> = await this.resourceDataStore.query('system_business', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+        let models: Array<any> = await this.resourceDataStore.query('system_model', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+        let pdatas: Array<any> = [];
+        for (let bs of businesses) {
+            let model = models.find(m => m.key === bs.key);
+            if (!model) { continue; }
+            pdatas.push({ id: bs.id, modelId: model.id });
+        }
+
+        for (let pdata of pdatas) {
+            let id = pdata.id;
+            delete pdata.id;
+            await this.resourceDataStore.patch('system_business', id, pdata).toPromise();
+        }
+        console.log(1, pdatas);
+
     }
 }
