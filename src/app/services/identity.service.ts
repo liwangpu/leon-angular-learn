@@ -31,6 +31,20 @@ export class IdentityService {
         return this.httpClient.post<IIdentityToken>(url, body);
     }
 
+    public refreshToken(tenantId?: string): Observable<{ access_token: string; refresh_token: string }> {
+        let refreshToken: string = localStorage.getItem('refresh_token');
+        const body: FormData = new FormData();
+        body.set('grant_type', 'refresh_token');
+        body.set('client_id', 'server');
+        body.set('refresh_token', refreshToken);
+
+        if (tenantId) {
+            body.set('tenantId', tenantId);
+        }
+
+        return this.httpClient.post<IIdentityToken>(`${this.uri}/ids/connect/token`, body);
+    }
+
     public getProfile(): Observable<any> {
         return this.httpClient.get<any>(`${this.uri}/ids/Identity/Profile`);
     }

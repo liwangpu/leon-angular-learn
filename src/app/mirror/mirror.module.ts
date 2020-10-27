@@ -6,9 +6,10 @@ import { HomeComponent } from './components/home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DycToolComponent } from './components/dyc-tool/dyc-tool.component';
 import * as fromService from './services';
+import { TenantChangeComponent } from './components/tenant-change/tenant-change.component';
 
 @NgModule({
-    declarations: [LoginComponent, HomeComponent, DycToolComponent],
+    declarations: [LoginComponent, HomeComponent, DycToolComponent, TenantChangeComponent],
     imports: [
         CommonModule,
         FormsModule,

@@ -42,11 +42,13 @@ export class LoginComponent implements OnInit {
             .pipe(tap(res => {
                 localStorage.setItem('latest_login', JSON.stringify(this.form.value));
                 localStorage.setItem('access_token', res.access_token);
+                localStorage.setItem('refresh_token', res.refresh_token);
             }))
             .pipe(switchMap(() => this.identitySrv.getProfile()))
             .subscribe(res => {
                 localStorage.setItem('identityId', res.identityId);
                 localStorage.setItem('username', res.name);
+                localStorage.setItem('tenantId', res.tenantId);
                 // tslint:disable-next-line: no-floating-promises
                 this.router.navigateByUrl(this.returnUrl ? decodeURIComponent(this.returnUrl) : '/');
             });

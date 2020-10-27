@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DycToolComponent } from './components/dyc-tool/dyc-tool.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
+import { TenantChangeComponent } from './components/tenant-change/tenant-change.component';
 
 
 const routes: Routes = [
@@ -13,6 +14,10 @@ const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent
+    },
+    {
+        path: 'tenant-change',
+        component: TenantChangeComponent
     },
     {
         path: 'dyc-tool',

@@ -3,6 +3,8 @@ import { ComponentDesignDataStoreService, PageMetaDataStoreService, ResourceData
 import * as _ from "lodash";
 import * as moment from 'moment';
 import { map } from 'rxjs/operators';
+import { GenerateShortId } from '../../../uuid-tool';
+import * as escapeStringRegexp from 'escape-string-regexp';
 
 @Component({
     selector: 'app-dyc-tool',
@@ -146,6 +148,97 @@ export class DycToolComponent implements OnInit {
             await this.resourceDataStore.patch('system_component_1', id, pdata).toPromise();
         }
         console.log(1, pdatas);
+
+    }
+
+    public async gridViewDefaultIdToKey(): Promise<void> {
+        if (localStorage.getItem('viewMap1')) { return; }
+        let views = await this.resourceDataStore.query('system_grid_view', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+        let viewMap: { [key: string]: string } = {};
+        for (let view of views) {
+            let v: any = JSON.parse(view.view);
+            if (v.id === '_ALL') { continue; }
+            let vid = GenerateShortId();
+            viewMap[v.id] = vid;
+            v.id = vid;
+            view.view = JSON.stringify(v);
+            view.viewKey = vid;
+            // if (!v.id) {
+            //     await this.resourceDataStore.delete('system_grid_view', view.id).toPromise();
+            // }
+        }
+        localStorage.setItem('viewMap1', JSON.stringify(viewMap));
+
+        let oldViewKeys = Object.keys(viewMap);
+        for (let oid of oldViewKeys) {
+            let view = views.find(v => v.id === oid);
+            await this.resourceDataStore.patch('system_grid_view', view.id, { viewKey: view.viewKey, view: view.view }).toPromise();
+        }
+        // console.log(1,views);   
+    }
+
+    public async pageMetadataDefaultIdToKey(): Promise<void> {
+        let viewMap: { [key: string]: string } = JSON.parse(localStorage.getItem('viewMap1'));
+        let pages = await this.resourceDataStore.query('system_business_page', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+        for (let page of pages) {
+            // if (page.id != '5f6d8c9cfb53d20a9cd04ec8') { continue; }
+            let designerDraft = page.designerDraft;
+            let metadata: string = page.metadata;
+
+            let vids: Array<string> = Object.keys(viewMap);
+            for (let vid of vids) {
+                let reg = new RegExp(escapeStringRegexp(vid), 'g');
+                // // console.log(1,reg);
+
+                if (reg.test(metadata)) {
+                    // console.log('前', JSON.parse(metadata));
+                    // console.log('vid', vid);
+                    // console.log('pid', page.id);
+                    metadata = metadata.replace(reg, viewMap[vid]);
+                    designerDraft = designerDraft.replace(reg, viewMap[vid]);
+
+                    await this.resourceDataStore.patch('system_business_page', page.id, { designerDraft, metadata }).toPromise();
+                    // console.log('后', JSON.parse(metadata));
+                }
+                // if (metadata.includes(`${vid}`)) {
+                //     console.log(metadata);
+
+                // }
+
+                // url = url.replace(new RegExp(escapeStringRegexp(rootUrl)), '');
+            }
+            // console.log(0, designerDraft);
+            // console.log(1, metadata);
+        }
+        // console.log(1, pages);
+
+    }
+
+    public async changeAllGridViewToKey(): Promise<void> {
+        let views = await this.resourceDataStore.query('system_grid_view', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+        for (let view of views) {
+            if (view.viewKey) { continue; }
+            let v: any = JSON.parse(view.view);
+            view.viewKey = v.id;
+            // console.log(1, view);
+
+            // let v: any = JSON.parse(view.view);
+
+            // let vid = GenerateShortId();
+            // v.id = vid;
+            // view.view = JSON.stringify(v);
+            // view.viewKey = vid;
+            await this.resourceDataStore.patch('system_grid_view', view.id, { viewKey: view.viewKey }).toPromise();
+            // console.log(1,view);
+
+            // viewMap[v.id] = vid;
+            // v.id = vid;
+            // view.view = JSON.stringify(v);
+            // view.viewKey = vid;
+            // if (!v.id) {
+            //     await this.resourceDataStore.delete('system_grid_view', view.id).toPromise();
+            // }
+        }
 
     }
 }
