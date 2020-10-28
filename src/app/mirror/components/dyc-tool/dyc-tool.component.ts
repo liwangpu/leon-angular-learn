@@ -241,4 +241,42 @@ export class DycToolComponent implements OnInit {
         }
 
     }
+
+    public async deleteDuplicateGridView(): Promise<void> {
+        let views = await this.resourceDataStore.query('system_grid_view', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+        let businesses: Array<string> = _.uniq(views.map(v => v.businessKey));
+        for (let bsKey of businesses) {
+            let bsViews = views.filter(v => v.businessKey === bsKey);
+            bsViews.forEach(bsView => {
+                let v: any = JSON.parse(bsView.view);
+                bsView.name = v.name;
+            });
+            bsViews = bsViews.filter(v => v.name === '默认视图');
+            if (!bsViews.length) { continue; }
+
+            let firstView = bsViews[0];
+            if (!firstView.viewKey) {
+                let vid = GenerateShortId();
+                let v: any = JSON.parse(firstView.view);
+                v.id = vid;
+                firstView.viewKey = vid;
+                firstView.view = JSON.stringify(v);
+                // console.log(1, firstView);
+                await this.resourceDataStore.patch('system_grid_view', firstView.id, { viewKey: firstView.viewKey, view: firstView.view }).toPromise();
+            }
+
+            if (bsViews.length < 2) { continue; }
+
+            let deleteViews = bsViews.slice(1);
+            for (let view of deleteViews) {
+                await this.resourceDataStore.delete('system_grid_view', view.id).toPromise();
+            }
+
+            // console.log(1, bsViews);
+            // console.log(2, bsViews.slice(1));
+
+        }
+
+
+    }
 }
