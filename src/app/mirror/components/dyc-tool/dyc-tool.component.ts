@@ -279,4 +279,50 @@ export class DycToolComponent implements OnInit {
 
 
     }
+
+    public async deleteTransferWorkflow(): Promise<void> {
+        let drafts = await this.resourceDataStore.query('system_draft_activity', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+        let activities = await this.resourceDataStore.query('system_activity', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+
+        for (let d of activities) {
+            await this.resourceDataStore.delete('system_activity', d.id).toPromise();
+        }
+        for (let d of drafts) {
+            await this.resourceDataStore.delete('system_draft_activity', d.id).toPromise();
+        }
+    }
+
+    public async transferOldWorkflow(): Promise<void> {
+        // const activities = [];
+        let oldVersions = await this.resourceDataStore.query('system_versioned_activity_bk', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+        let oldDrafts = await this.resourceDataStore.query('system_draft_activity_bk', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+        let drafts = await this.resourceDataStore.query('system_draft_activity', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+        let activities = await this.resourceDataStore.query('system_activity', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
+
+        for (let ov of oldVersions) {
+            if (ov.displayName.indexOf('废弃') > -1) { continue; }
+            // 找到之前的草稿
+            let refDraft = oldDrafts.find(od => od.flowId === ov.id);
+            if (!refDraft) { continue; }
+            refDraft.version = 0;
+            let act = _.cloneDeep(ov);
+            refDraft.name = act.name;
+            delete act.definition;
+            act.version = 1;
+            ov.version = 0;
+
+            await this.resourceDataStore.create('system_activity', act).toPromise();
+            await this.resourceDataStore.create('system_draft_activity', refDraft).toPromise();
+            await this.resourceDataStore.create('system_versioned_activity', ov).toPromise();
+
+            console.log(1, ov);
+            console.log(2, refDraft);
+            console.log(3, act);
+            // break;
+        }
+
+        console.log('oldVersions:', oldVersions);
+        console.log('drafts:', drafts);
+        console.log('activities:', activities);
+    }
 }
