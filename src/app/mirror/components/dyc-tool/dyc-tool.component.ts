@@ -283,7 +283,8 @@ export class DycToolComponent implements OnInit {
     public async deleteTransferWorkflow(): Promise<void> {
         let drafts = await this.resourceDataStore.query('system_draft_activity', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
         let activities = await this.resourceDataStore.query('system_activity', { pagination: 'limit=99999' }).pipe(map(res => res.items)).toPromise();
-
+        // db.getCollection("system_activity").remove({"isDeleted" : {"$eq":true}})
+        // db.getCollection("system_draft_activity").remove({"isDeleted" : {"$eq":true}})
         for (let d of activities) {
             await this.resourceDataStore.delete('system_activity', d.id).toPromise();
         }
